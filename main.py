@@ -27,25 +27,24 @@ def verify_signature(body, signature):
         logging.error("Webhook Secret Missing")
         return False
 
-    expected_signature_hash = hmac.new(WEBHOOK_SECRET.encode("utf-8"), body, hashlib.sha256)
-    expected_signature = "sha256=" + expected_signature_hash.hexdigest()
+    expected_signature = "sha256=" + hmac.new(WEBHOOK_SECRET.encode("utf-8"), body, hashlib.sha256).hexdigest()
 
     logging.info("Verified")
     return hmac.compare_digest(signature, expected_signature)
 
 
 @app.post("/webhook")
-async def webhook(req: Request,
-                  x_github_event: str = Header(None),
-                  x_github_delivery: str = Header(None),
-                  x_hub_signature_256: str = Header(None)
-                  ):
+async def webhook(req: Request, x_hub_signature_256: str = Header(None)):
     body = await req.body()
 
     if not verify_signature(body, x_hub_signature_256):
         raise HTTPException(status_code=403, detail="Wrong Signature")
 
-    payload = json.loads(body.decode("utf-8"))
+    try:
+        payload = json.loads(body.decode("utf-8"))
+    except:
+        raise Exception("Could not parse payload")
+
     await queue.put(payload)
 
     return {"status": "ok"}
@@ -54,7 +53,7 @@ async def webhook(req: Request,
 async def events_generator():
     while True:
         data = await queue.get()
-        yield json.dumps(data)
+        yield f"data: {json.dumps(data)}\n\n"
         queue.task_done()
 
 
