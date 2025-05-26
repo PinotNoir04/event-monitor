@@ -7,7 +7,7 @@ import os
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Header, HTTPException, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 load_dotenv()
@@ -17,6 +17,17 @@ WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
 app = FastAPI()
 
 queue = asyncio.Queue()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/feed")
+async def event_feed():
+    try:
+        with open("static/index.html", "r") as f:
+            return HTMLResponse(content=f.read(), status_code=200)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="index.html not found")
 
 
 def verify_signature(body, signature):

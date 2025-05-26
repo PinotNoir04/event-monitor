@@ -20,6 +20,8 @@ This is a feed of a number of repository events webhook deliveries that get upda
 
 ### Frontend
 
+* Made with very basic DOM manipulation
+* The feed is not updating even though the SSE endpoint is working
 
 
 ## TODO
