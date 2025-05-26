@@ -1,4 +1,4 @@
-document.addEventListener("SOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
 	const feed = document.getElementById("feed")
 
 	const updateFeed = (payload) => {
