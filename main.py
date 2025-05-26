@@ -21,7 +21,7 @@ queue = asyncio.Queue()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-@app.get("/feed")
+@app.get("/")
 async def event_feed():
     try:
         with open("static/index.html", "r") as f:

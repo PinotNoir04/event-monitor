@@ -7,15 +7,14 @@ This is a feed of a number of repository events webhook deliveries that gets upd
 ## Prerequisite
 
 * Smee client (can be installed with `npm install --global smee-client`)
-* FastAPI (can be installed with pip or conda)
 
 ## Steps to test
-```
-* smee --url https://smee.io/H4RV9oWjWigm2OP6 --path /webhook --port 8000
+
+* run `pip install -r requirements.txt`
+* `smee --url https://smee.io/H4RV9oWjWigm2OP6 --path /webhook --port 8000`
 * set environment variable WEBHOOK_SECRET to qaswcdefvrbtghnyydfscvpoijuh in the .env file
-* run "fastapi dev main.py"
+* run `fastapi dev main.py`
 * the app is already installed in the repository for testing
-```
 
 ## What I have done
 
