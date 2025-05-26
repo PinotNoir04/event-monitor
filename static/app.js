@@ -11,6 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	evtSource.onmessage = (msg) => {
 		const data = JSON.parse(msg.data)
-		updateFeed(data.payload)
+		updateFeed(data)
 	}
 })
